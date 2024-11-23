@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Licitações</title>
+    <!-- Link para o Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .filter-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .filter-container .col-md-3 {
+            margin-bottom: 15px;
+        }
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            height: 350px; /* Altura fixa para manter o padrão */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .card-content {
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .icon-text {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        .icon-text i {
+            
+            color: #007BFF;
+        }
+        /* Estilo para o botão "Limpar Filtros" */
+        .btn-clear {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 8px 20px;  /* Ajuste o padding para reduzir a altura */
+            font-size: 12px;  /* Tamanho da fonte */
+            width: auto;  /* Garante que o botão tenha o tamanho adequado ao conteúdo */
+            height: 60px;  /* Define uma altura fixa para evitar que o botão fique muito alto */
+        }
+
+        .btn-clear:hover {
+            background-color: #0056b3;
+        }
+
+        /* Botão menor */
+        .btn-clear-sm {
+            font-size: 12px;  /* Ajusta o tamanho da fonte */
+            padding: 5px 15px;  /* Ajusta o padding para manter o botão pequeno */
+            height: 30px;  /* Garante que o botão tenha uma altura menor */
+        }
+        /* Ajustar o alinhamento do botão ao campo de Data Início */
+        .filter-container .col-md-3:last-child {
+            display: flex;
+            align-items: flex-end;  /* Alinha o botão na parte inferior do campo */
+        }
+        .btn-custom {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 8px 20px;
+            font-size: 14px;
+            width: auto;
+            display: flex;
+            align-items: center;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .filter-container {
+            margin-bottom: 20px;
+        }
+        .alert-soft {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            font-size: 14px;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+        .btn-infos {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 5px 15px;  /* Ajuste o padding para reduzir a altura */
+            font-size: 12px;  /* Tamanho da fonte */
+            width: auto;  /* Garante que o botão tenha o tamanho adequado ao conteúdo */
+            display: flex;
+            align-items: center;  /* Alinha o texto verticalmente */
+            justify-content: center;  /* Centraliza o texto horizontalmente */
+            text-align: center;
+        }
+
+        .btn-infos:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+        .btn-icon {
+            margin-right: 8px;  /* Adiciona espaço entre o ícone e o texto */
+        }
+        .modal-content {
+            border-radius: 10px;
+        }
+        @media (max-width: 767px) {
+            .filter-container .col-md-3 {
+                margin-bottom: 10px;
+            }
+            .btn-clear {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center">Painel de Licitações</h1>
+
+        <div class="filter-container">
+            <div class="row g-3">
+                <!-- Filtro por UF -->
+                <div class="col-md-3">
+                    <label for="ufFilter" class="form-label">Filtrar por UF</label>
+                    <select id="ufFilter" class="form-select">
+                        <option value="">Selecione</option>
+                    </select>
+                </div>
+                
+                <!-- Filtro por Modalidade -->
+                <div class="col-md-3">
+                    <label for="modalidadeFilter" class="form-label">Filtrar por Modalidade</label>
+                    <select id="modalidadeFilter" class="form-select">
+                        <option value="">Selecione</option>
+                    </select>
+                </div>
+        
+                <!-- Filtro por Palavra-chave -->
+                <div class="col-md-3">
+                    <label for="keywordFilter" class="form-label">Filtrar por Palavra-chave</label>
+                    <input type="text" id="keywordFilter" class="form-control" placeholder="Digite a palavra-chave">
+                </div>
+        
+                <!-- Filtro por Data -->
+                <div class="col-md-3">
+                    <label for="startDateFilter" class="form-label">Data Início</label>
+                    <input type="date" id="startDateFilter" class="form-control">
+                </div>
+                <div class="col-md-3">
+                    <label for="endDateFilter" class="form-label">Data Fim</label>
+                    <input type="date" id="endDateFilter" class="form-control">
+                </div>
+        
+                <!-- Botão Limpar Filtros (alinhado à direita) -->
+                <div class="col-md-3 offset-md-6 d-flex justify-content-end">
+                    <button id="clearFiltersButton" class="btn-clear btn-clear-sm">Limpar Filtros</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contagem das Licitações -->
+        <div id="countDisplay" class="mb-3 text-center"></div>
+
+        <!-- Cards de Dados -->
+        <div id="dados" class="row row-cols-1 row-cols-md-2 g-4 mt-3"></div>
+    
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Detalhes da Licitação</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Iframe para carregar o site -->
+                        <iframe id="modalIframe" src="" width="100%" height="600px" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
+    <script>
+        // Função para formatar a data para o padrão brasileiro
+        function formatarData(dataIso) {
+            if (!dataIso) return '-'; // Caso esteja vazio
+            const dataLimpa = dataIso.split('T')[0];
+            const [ano, mes, dia] = dataLimpa.split('-');
+            return `${dia}/${mes}/${ano}`;
+        }
+
+        // Função para formatar o valor para o padrão brasileiro
+        function formatarValor(valor) {
+            if (!valor || isNaN(valor)) return '-';
+            return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        // Função para obter os valores únicos para UF e Modalidade
+        function obterValoresUnicos(dados, campo) {
+            const valores = dados.map(row => row[campo]);
+            return [...new Set(valores)].sort();
+        }
+         // Função para abrir o modal com o site
+        function abrirModalComSite(link) {
+            const modalIframe = document.getElementById('modalIframe');
+            modalIframe.src = link; // Define o link no iframe
+            const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+            modal.show(); // Exibe o modal
+        }
+
+        // Filtrar os dados com base nos filtros aplicados
+        function filtrarDados(dados) {
+            const ufFilter = document.getElementById('ufFilter').value.toUpperCase();
+            const modalidadeFilter = document.getElementById('modalidadeFilter').value.toUpperCase();
+            const keywordFilter = document.getElementById('keywordFilter').value.toUpperCase();
+            const startDateFilter = document.getElementById('startDateFilter').value;
+            const endDateFilter = document.getElementById('endDateFilter').value;
+
+            return dados.filter(row => {
+                const ufMatch = ufFilter ? row['unidadeOrgaoUfSigla'] && row['unidadeOrgaoUfSigla'].toUpperCase().includes(ufFilter) : true;
+                const modalidadeMatch = modalidadeFilter ? row['modalidadeNome'] && row['modalidadeNome'].toUpperCase().includes(modalidadeFilter) : true;
+                const keywordMatch = keywordFilter ? row['objetoCompra'] && row['objetoCompra'].toUpperCase().includes(keywordFilter) : true;
+
+                const dataAbertura = row['dataAberturaPropostaPncp'] ? row['dataAberturaPropostaPncp'].split('T')[0] : '';
+                const dataIniciaDentro = startDateFilter ? dataAbertura >= startDateFilter : true;
+                const dataTerminaDentro = endDateFilter ? dataAbertura <= endDateFilter : true;
+
+                return ufMatch && modalidadeMatch && keywordMatch && dataIniciaDentro && dataTerminaDentro;
+            });
+        }
+
+        // Carregar o arquivo Excel do repositório
+        fetch('dados_contratacoes_pncp 21.xlsx')
+            .then(response => response.arrayBuffer())
+            .then(data => {
+                const workbook = XLSX.read(data, { type: 'array' });
+                const sheet = workbook.Sheets[workbook.SheetNames[0]];
+                const json = XLSX.utils.sheet_to_json(sheet);
+
+                // Preencher os filtros de UF e Modalidade
+                const ufs = obterValoresUnicos(json, 'unidadeOrgaoUfSigla');
+                const modalidades = obterValoresUnicos(json, 'modalidadeNome');
+
+                const ufSelect = document.getElementById('ufFilter');
+                const modalidadeSelect = document.getElementById('modalidadeFilter');
+
+                ufs.forEach(uf => {
+                    const option = document.createElement('option');
+                    option.value = uf;
+                    option.textContent = uf;
+                    ufSelect.appendChild(option);
+                });
+
+                modalidades.forEach(modalidade => {
+                    const option = document.createElement('option');
+                    option.value = modalidade;
+                    option.textContent = modalidade;
+                    modalidadeSelect.appendChild(option);
+                });
+
+                // Função para calcular a diferença em dias entre duas datas
+                function calcularDiasDeDiferenca(dataFinal) {
+                    const dataAtual = new Date();
+                    const dataEncerramento = new Date(dataFinal);
+                    const diffTime = dataEncerramento - dataAtual; // Diferença em milissegundos
+                    const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24)); // Converte para dias
+                    return diffDays;
+                }
+
+                // Função para gerar os cards com alerta para data de encerramento próxima
+                function gerarCards(filtrados) {
+                    const dadosContainer = document.getElementById('dados');
+                    dadosContainer.innerHTML = ''; // Limpar os dados atuais
+
+                    // Exibir a contagem de licitações
+                    const countDisplay = document.getElementById('countDisplay');
+                    countDisplay.innerHTML = `Total de Licitações: ${filtrados.length}`;
+
+                    // Gerar os cards
+                    filtrados.forEach(row => {
+                        const card = document.createElement('div');
+                        card.classList.add('col');
+
+                        // Calcular a diferença de dias para o encerramento
+                        const diffDias = calcularDiasDeDiferenca(row['dataEncerramentoPropostaPncp']);
+                        let alertaClass = '';
+                        let alertaMensagem = '';
+
+                        // Se a data de encerramento estiver a 3 dias ou menos
+                        if (diffDias <= 3 && diffDias >= 0) {
+                            alertaClass = 'alert-danger'; // Classe de alerta (vermelho)
+                            alertaMensagem = `Encerramento em ${diffDias} dias!`;
+                        }
+
+                        card.innerHTML = `
+                            <div class="col">
+                                <div class="card p-3 ${alertaClass}">
+                                    <div class="card-content">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p class="icon-text">
+                                                    <i class="fa fa-map-marker-alt"></i> <strong>UF:</strong> ${row['unidadeOrgaoUfSigla']}
+                                                </p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p class="icon-text">
+                                                    <i class="fa fa-city"></i> <strong>Cidade:</strong> ${row['unidadeOrgaoMunicipioNome']}
+                                                </p>
+                                            </div> 
+                                        </div>     
+                                        <p class="icon-text">
+                                            <i class="fa fa-info-circle"></i> <strong>Objeto:</strong> ${row['objetoCompra']}
+                                        </p>
+                                        <p class="icon-text">
+                                            <i class="fa fa-building"></i> <strong>Órgão:</strong> ${row['unidadeOrgaoNomeUnidade']}
+                                        </p>
+                                        <p class="icon-text">
+                                            <i class="fa fa-list-alt"></i> <strong>Modalidade:</strong> ${row['modalidadeNome']}
+                                        </p>
+                                        <p class="icon-text">
+                                            <i class="fa fa-file-alt"></i> <strong>Edital:</strong> ${row['numeroCompra']}
+                                        </p>
+                                        <p class="icon-text">
+                                            <i class="fa fa-calendar-alt"></i> <strong>Abertura:</strong> ${formatarData(row['dataAberturaPropostaPncp'])}
+                                        </p>
+                                        <p class="icon-text">
+                                            <i class="fa fa-clock"></i> <strong>Encerramento:</strong> ${formatarData(row['dataEncerramentoPropostaPncp'])}
+                                        </p>
+                                        <p class="icon-text">
+                                            <i class="fa fa-dollar-sign"></i> <strong>Valor Estimado:</strong> ${formatarValor(row['valorTotalEstimado'])}
+                                        </p>
+                                    </div>
+                                    ${alertaMensagem ? `<div class="alert alert-warning alert-soft">${alertaMensagem}</div>` : ''}
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <a href="#" onclick="abrirModalComSite('https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/acompanhamento-compra?compra=${row['idCompra']}')" class="btn-infos btn mt-2">
+                                                <i class="fas fa-box btn-icon"></i> Ver Itens
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="#" onclick="abrirModalComSite('https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/quadro-informativo?compra=${row['idCompra']}')" class="btn-infos btn mt-2">
+                                                <i class="fas fa-bell btn-icon"></i> Ver Avisos
+                                            </a>
+                                        </div> 
+                                    </div>     
+                                </div>
+                            </div>
+                        </div>
+                        </br>
+                        `;
+
+                        dadosContainer.appendChild(card);
+                    });
+                }
+
+
+                // Inicialmente, gerar os cards com todos os dados
+                gerarCards(json);
+
+                // Adicionar evento de filtro
+                document.getElementById('ufFilter').addEventListener('change', () => gerarCards(filtrarDados(json)));
+                document.getElementById('modalidadeFilter').addEventListener('change', () => gerarCards(filtrarDados(json)));
+                document.getElementById('keywordFilter').addEventListener('input', () => gerarCards(filtrarDados(json)));
+                document.getElementById('startDateFilter').addEventListener('input', () => gerarCards(filtrarDados(json)));
+                document.getElementById('endDateFilter').addEventListener('input', () => gerarCards(filtrarDados(json)));
+                document.getElementById('clearFiltersButton').addEventListener('click', () => {
+                    document.getElementById('ufFilter').value = '';
+                    document.getElementById('modalidadeFilter').value = '';
+                    document.getElementById('keywordFilter').value = '';
+                    document.getElementById('startDateFilter').value = '';
+                    document.getElementById('endDateFilter').value = '';
+                    gerarCards(json);
+                });
+            });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
