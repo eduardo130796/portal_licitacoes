@@ -148,7 +148,168 @@
             .btn-clear {
                 width: 100%;
             }
+            .btn-filter{
+                width: 100%;
+            }
         }
+        .btn-filter {
+            background-color: #00ff4c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 8px 20px;  /* Ajuste o padding para reduzir a altura */
+            font-size: 12px;  /* Tamanho da fonte */
+            width: auto;  /* Garante que o botão tenha o tamanho adequado ao conteúdo */
+            height: 60px;  /* Define uma altura fixa para evitar que o botão fique muito alto */
+        }
+
+        .btn-filter:hover {
+            background-color: #00b31e;
+        }
+
+        /* Botão menor */
+        .btn-filter-sm {
+            font-size: 12px;  /* Ajusta o tamanho da fonte */
+            padding: 5px 15px;  /* Ajusta o padding para manter o botão pequeno */
+            height: 30px;  /* Garante que o botão tenha uma altura menor */
+        }
+        /* Estilo do modal */
+        .modal-body {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        select {
+            width: 100%;
+            height: 200px;
+        }
+
+        button {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        small {
+            display: block;
+            margin-top: 5px;
+        }
+        /* Estilo geral dos labels */
+        label {
+            font-weight: bold;
+            font-size: 13px;
+            color: #555;
+        }
+
+        /* Pequenos textos abaixo dos botões */
+        small {
+            font-size: 12px;
+            color: #888;
+        }
+
+        /* Inputs menores */
+        .form-control-sm, .form-select-sm {
+            font-size: 13px;
+            padding: 5px 10px;
+        }
+
+        /* Inputs menores */
+        .form-control-sm, .form-select-st {
+            font-size: 13px;
+            padding: 5px 1px;
+            height: 30px;
+            margin-top: 42px;
+        }
+
+        /* Botões menores */
+        .btn-sm {
+            font-size: 12px;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        /* Organização responsiva */
+        @media (max-width: 767px) {
+            .filter-container .col-md-4, 
+            .filter-container .col-md-6, 
+            .filter-container .col-md-2 {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+
+            .btn-sm {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .filter-container {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+            /* Alinhamento do select de Modalidade */
+            /* Ajuste do alinhamento geral dos labels e componentes */
+            .filter-container .form-label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+                font-size: 13px;
+                color: #555;
+                text-align: left;
+            }
+
+                    /* Ajuste específico para o select de Modalidade */
+            #modalidadeFilter {
+                width: 100%;                 /* Garante que o select ocupe toda a largura disponível */
+                height: calc(2.25rem + 2px); /* Altura ajustada para ser proporcional aos outros campos */
+                padding: 0.375rem 0.75rem;   /* Ajuste do padding interno */
+                font-size: 0.875rem;         /* Ajuste da fonte para se alinhar com o restante do layout */
+                line-height: 1.5;            /* Centraliza o conteúdo verticalmente */
+            }
+
+            /* Garantir que o select tenha a mesma largura dos outros campos */
+            .filter-container .col-md-4 {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            /* Ajustar as bordas do select para ficarem mais sutis e harmônicas */
+            #modalidadeFilter {
+                border-radius: 5px;  /* Bordas arredondadas para combinar com o restante do layout */
+            }
+                        
+        }
+        
     </style>
 </head>
 <body>
@@ -156,52 +317,139 @@
         <h1 class="text-center">Painel de Licitações</h1>
 
         <div class="filter-container">
-            <div class="row g-3">
+            <div class="row g-2 align-items-start">
+                <!-- Filtro por Região -->
+                <div class="col-md-4">
+                    <label for="regionFilter" class="form-label">Filtrar por Região</label>
+                    <small id="regionFilterDisplay" class="text-muted">Nenhuma região selecionada</small>
+                    <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#regionModal">
+                        Selecionar Regiões
+                    </button>
+                </div>
+            
                 <!-- Filtro por UF -->
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label for="ufFilter" class="form-label">Filtrar por UF</label>
-                    <select id="ufFilter" class="form-select">
-                        <option value="">Selecione</option>
-                    </select>
+                    <small id="ufFilterDisplay" class="text-muted">Nenhuma UF selecionada</small>
+                    <button type="button" class="btn btn-primary btn-sm w-100" data-bs-toggle="modal" data-bs-target="#ufModal">
+                        Selecionar UFs
+                    </button>
                 </div>
-                
+            
                 <!-- Filtro por Modalidade -->
-                <div class="col-md-3">
-                    <label for="modalidadeFilter" class="form-label">Filtrar por Modalidade</label>
-                    <select id="modalidadeFilter" class="form-select">
+                <div class="col-md-4">
+                    <label for="modalidadeFilter" class="form-label">Modalidade</label>
+                    <select id="modalidadeFilter" class="form-select form-select-st">
                         <option value="">Selecione</option>
                     </select>
                 </div>
-        
+            
+    
                 <!-- Filtro por Palavra-chave -->
-                <div class="col-md-3">
-                    <label for="keywordFilter" class="form-label">Filtrar por Palavra-chave</label>
-                    <input type="text" id="keywordFilter" class="form-control" placeholder="Digite a palavra-chave">
+                <div class="col-md-4">
+                    <label for="keywordFilter" class="form-label">Palavra-chave</label>
+                    <input type="text" id="keywordFilter" class="form-control form-control-sm" placeholder="Digite a palavra-chave">
                 </div>
-        
+    
                 <!-- Filtro por Data -->
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="startDateFilter" class="form-label">Data Início</label>
-                    <input type="date" id="startDateFilter" class="form-control">
+                    <input type="date" id="startDateFilter" class="form-control form-control-sm">
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="endDateFilter" class="form-label">Data Fim</label>
-                    <input type="date" id="endDateFilter" class="form-control">
+                    <input type="date" id="endDateFilter" class="form-control form-control-sm">
                 </div>
-        
-                <!-- Botão Limpar Filtros (alinhado à direita) -->
-                <div class="col-md-3 offset-md-6 d-flex justify-content-end">
-                    <button id="clearFiltersButton" class="btn-clear btn-clear-sm">Limpar Filtros</button>
+    
+                <!-- Botões de Ação -->
+                <div class="col-md-4 text-end">
+                    <button id="filterButton" class="btn btn-success btn-sm" onclick="carregarDadosFiltrados()">Filtrar</button>
+                    <button id="clearFiltersButton" class="btn btn-secondary btn-sm" onclick="limparFiltros()">Limpar</button>
                 </div>
             </div>
         </div>
-
+    
         <!-- Contagem das Licitações -->
         <div id="countDisplay" class="mb-3 text-center"></div>
 
         <!-- Cards de Dados -->
         <div id="dados" class="row row-cols-1 row-cols-md-2 g-4 mt-3"></div>
-    
+  
+        <!-- Modal para Regiões -->
+        <div class="modal fade" id="regionModal" tabindex="-1" aria-labelledby="regionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="regionModalLabel">Selecione as Regiões</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <h6>Regiões Disponíveis</h6>
+                                <select id="regionAvailable" size="10" multiple class="form-control">
+                                    <option value="Norte">Norte</option>
+                                    <option value="Nordeste">Nordeste</option>
+                                    <option value="Centro-Oeste">Centro-Oeste</option>
+                                    <option value="Sudeste">Sudeste</option>
+                                    <option value="Sul">Sul</option>
+                                </select>
+                            </div>
+                            <div class="col text-center">
+                                <button type="button" id="moveRegionLeft" class="btn btn-secondary">←</button>
+                                <button type="button" id="moveRegionRight" class="btn btn-secondary">→</button>
+                            </div>
+                            <div class="col">
+                                <h6>Regiões Selecionadas</h6>
+                                <select id="regionSelected" size="10" multiple class="form-control">
+                                    <!-- As regiões selecionadas serão movidas para cá -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="button" id="applyRegionFilters" class="btn btn-primary">Aplicar Filtros</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal para UFs -->
+        <div class="modal fade" id="ufModal" tabindex="-1" aria-labelledby="ufModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="ufModalLabel">Filtrar por UFs</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label for="ufAvailable">Selecione as UFs:</label>
+                        <div class="row">
+                            <div class="col">
+                                <select id="ufAvailable" class="form-select" size="10" multiple>
+                                    <!-- As UFs serão preenchidas dinamicamente aqui -->
+                                </select>
+                            </div>
+                            <div class="col text-center">
+                                <button id="moveRight" class="btn btn-primary mt-4"> &gt; </button>
+                                <button id="moveLeft" class="btn btn-primary mt-2"> &lt; </button>
+                            </div>
+                            <div class="col">
+                                <select id="ufSelected" class="form-select" size="10" multiple>
+                                    <!-- UFs selecionadas serão exibidas aqui -->
+                                </select>
+                            </div>
+                        </div>
+                        <small class="form-text text-muted">Selecione mais de uma UF, se necessário.</small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" id="applyUFFilters" class="btn btn-primary">Aplicar Filtro de UFs</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
+
 
         <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -223,197 +471,527 @@
 
 
     <script>
-        // Função para formatar a data para o padrão brasileiro
-        function formatarData(dataIso) {
-            if (!dataIso) return '-'; // Caso esteja vazio
-            const dataLimpa = dataIso.split('T')[0];
-            const [ano, mes, dia] = dataLimpa.split('-');
+        document.addEventListener("DOMContentLoaded", function () {
+            configurarBotoes();
+            atualizarUFsPorRegiao();
+
+            // Certifique-se de que os elementos existam no DOM antes de adicionar event listeners
+            const regionSelected = document.getElementById("regionSelected");
+            const ufSelected = document.getElementById("ufSelected");
+
+            if (regionSelected) {
+                document.getElementById("applyRegionFilters").addEventListener("click", aplicarRegionFilters);
+            }
+
+            if (ufSelected) {
+                document.getElementById("applyUFFilters").addEventListener("click", aplicarUFFilters);
+            }
+
+            // Fechar modal corretamente sem bloquear a tela
+            const modalCloseButton = document.querySelector("#modalCloseButton");
+            if (modalCloseButton) {
+                modalCloseButton.addEventListener("click", fecharModal);
+            }
+        });
+        // Função para garantir que o modal seja fechado sem bloquear a tela
+        
+        // Atualiza as UFs ao alterar o filtro de regiões
+        document.getElementById("regionSelected").addEventListener("change", atualizarUFsPorRegiao);
+
+
+        // Função para carregar os dados filtrados
+        function carregarDadosFiltrados() {
+            fetch("dados_contratacoes_pncp_final.json")
+                .then((res) => {
+                    if (!res.ok) throw new Error("Erro ao carregar os dados.");
+                    return res.json();
+                })
+                .then((dados) => {
+                    // Filtra apenas os dados cuja data de encerramento ainda não passou
+                    const dadosValidos = dados.filter((item) => {
+                        const dataEncerramento = item["dataEncerramentoPropostaPncp"];
+                        if (!dataEncerramento) return false; // Ignorar itens sem data de encerramento
+                        const dataAtual = new Date();
+                        return new Date(dataEncerramento) >= dataAtual; // Apenas futuras ou atuais
+                    });
+                    aplicarFiltros(dadosValidos);
+                })
+                .catch((error) => exibirErro(error.message));
+        }
+    
+        // Mapeamento de regiões e suas respectivas UFs
+        const regioes = {
+            "Norte": ["AC", "AP", "AM", "PA", "RO", "RR", "TO"],
+            "Nordeste": ["AL", "BA", "CE", "MA", "PB", "PE", "PI", "RN", "SE"],
+            "Centro-Oeste": ["DF", "GO", "MS", "MT"],
+            "Sudeste": ["ES", "MG", "RJ", "SP"],
+            "Sul": ["PR", "RS", "SC"]
+        };
+
+        //document.getElementById("regionSelected").addEventListener("change", atualizarUFs);
+
+        function atualizarUFs() {
+            const regionSelected = document.getElementById("regionSelected");
+            const ufAvailable = document.getElementById("ufAvailable");
+
+            // Obter as regiões selecionadas
+            const regioesSelecionadas = Array.from(regionSelected.options).map(option => option.value);
+
+            if (regioesSelecionadas.length === 0) {
+                // Se nenhuma região estiver selecionada, exibir todas as UFs
+            exibirTodasUfs();
+                return;
+            }
+
+            // Filtrar as UFs com base nas regiões selecionadas
+            const ufsFiltradas = [];
+            regioesSelecionadas.forEach(region => {
+                if (regioes[region]) {
+                    ufsFiltradas.push(...regioes[region]);
+                }
+            });
+
+            // Atualizar a lista de UFs disponíveis
+            ufAvailable.innerHTML = "";
+            ufsFiltradas.forEach(uf => {
+                const option = document.createElement("option");
+                option.value = uf;
+                option.textContent = uf;
+                ufAvailable.appendChild(option);
+            });
+
+            ordenarLista(ufAvailable);
+        }
+
+        function carregarModalidades() {
+            // Exemplo: Buscando modalidades do JSON
+            fetch("dados_contratacoes_pncp_final.json")
+                .then((res) => res.json())
+                .then((dados) => {
+                    // Extraímos as modalidades únicas dos dados
+                    const modalidades = new Set(dados.map(item => item.modalidadeNome).filter(Boolean));
+                    
+                    // Selecionamos o campo select de modalidade
+                    const selectModalidade = document.getElementById("modalidadeFilter");
+
+                    // Adiciona a opção "Selecione uma modalidade"
+                    selectModalidade.innerHTML = '<option value="">Selecione uma modalidade...</option>';
+
+                    // Adiciona as opções de modalidades
+                    modalidades.forEach(modalidade => {
+                        const option = document.createElement("option");
+                        option.value = modalidade;
+                        option.textContent = modalidade;
+                        selectModalidade.appendChild(option);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Erro ao carregar modalidades:", error);
+                });
+        }
+
+        // Chama a função para carregar as modalidades após o DOM estar carregado
+        document.addEventListener("DOMContentLoaded", carregarModalidades);
+        // Função para mostrar alertas de erro
+        function exibirErro(mensagem) {
+            const containerErro = document.createElement("div");
+            containerErro.className = "alert alert-danger";
+            containerErro.textContent = mensagem;
+            document.querySelector(".container").prepend(containerErro);
+        }
+    
+        // Formatação de valor em reais
+        function formatarValor(valor) {
+            return valor
+                ? parseFloat(valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+                : "-";
+        }
+    
+        // Formatar data para dd/mm/aaaa
+        function formatarData(data) {
+            if (!data) return "-";
+            const [ano, mes, dia] = data.split("T")[0].split("-");
             return `${dia}/${mes}/${ano}`;
         }
+    
+    
+        function aplicarFiltros(dados) {
+            const selectedRegions = Array.from(document.getElementById("regionSelected").selectedOptions).map(opt => opt.value);
+            const selectedUFs = Array.from(document.getElementById("ufSelected").selectedOptions).map(opt => opt.value);
+            const modalidade = document.getElementById("modalidadeFilter").value;
+            const keyword = document.getElementById("keywordFilter").value.toLowerCase();
+            const startDate = document.getElementById("startDateFilter").value;
+            const endDate = document.getElementById("endDateFilter").value;
 
-        // Função para formatar o valor para o padrão brasileiro
-        function formatarValor(valor) {
-            if (!valor || isNaN(valor)) return '-';
-            return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const dadosFiltrados = dados.filter((item) => {
+                // Verifica se a UF pertence às regiões selecionadas ou está explicitamente escolhida
+                const verificarRegiao = () => {
+                    if (selectedUFs.length > 0) {
+                        return selectedUFs.includes(item["unidadeOrgaoUfSigla"]);
+                    }
+                    if (selectedRegions.length > 0) {
+                        return selectedRegions.some(region => regioes[region]?.includes(item["unidadeOrgaoUfSigla"]));
+                    }
+                    return true; // Sem filtro
+                };
+
+                const verificarCampo = (campo, filtro) =>
+                    !filtro || (item[campo] && item[campo].toLowerCase().includes(filtro.toLowerCase()));
+
+                const verificarData = (campo, inicio, fim) => {
+                    if (!item[campo]) return true;
+                    const data = new Date(item[campo]);
+                    return (!inicio || data >= new Date(inicio)) && (!fim || data <= new Date(fim));
+                };
+
+                return (
+                    verificarRegiao() &&
+                    verificarCampo("modalidadeNome", modalidade) &&
+                    verificarCampo("objetoCompra", keyword) &&
+                    verificarData("dataAberturaPropostaPncp", startDate, endDate)
+                );
+            });
+
+            renderizarCards(dadosFiltrados);
         }
 
-        // Função para obter os valores únicos para UF e Modalidade
-        function obterValoresUnicos(dados, campo) {
-            const valores = dados.map(row => row[campo]);
-            return [...new Set(valores)].sort();
+        // Adicionar evento ao filtro de regiões para atualizar as UFs
+        //document.getElementById("regionSelected").addEventListener("change", atualizarUFs);
+
+        function limparFiltros() {
+    // Limpar regiões
+            const regionAvailable = document.getElementById("regionAvailable");
+            const regionSelected = document.getElementById("regionSelected");
+            moverTodosItens(regionSelected, regionAvailable);
+
+            // Limpar UFs
+            const ufAvailable = document.getElementById("ufAvailable");
+            const ufSelected = document.getElementById("ufSelected");
+            moverTodosItens(ufSelected, ufAvailable);
+
+            // Mostrar todas as UFs
+            exibirTodasUfs();
+
+            
+            regionSelected.innerHTML = ""; // Limpa todas as seleções
+            atualizarUFsPorRegiao(); // Atualiza para mostrar todas as UFs
+            
+
+            // Atualizar displays
+            document.getElementById("regionFilterDisplay").textContent = "Todas as Regiões";
+            document.getElementById("ufFilterDisplay").textContent = "Todas as UFs";
+
+            // Resetar outros campos
+            document.getElementById("modalidadeFilter").selectedIndex = 0;
+            document.getElementById("keywordFilter").value = "";
+            document.getElementById("startDateFilter").value = "";
+            document.getElementById("endDateFilter").value = "";
+
+            // Limpar exibição de dados
+            document.getElementById("dados").innerHTML = "";
+            document.getElementById("countDisplay").textContent = "Nenhuma licitação encontrada.";
         }
-         // Função para abrir o modal com o site
-        function abrirModalComSite(link) {
-            const modalIframe = document.getElementById('modalIframe');
-            modalIframe.src = link; // Define o link no iframe
-            const modal = new bootstrap.Modal(document.getElementById('exampleModal'));
-            modal.show(); // Exibe o modal
-        }
 
-        // Filtrar os dados com base nos filtros aplicados
-        function filtrarDados(dados) {
-            const ufFilter = document.getElementById('ufFilter').value.toUpperCase();
-            const modalidadeFilter = document.getElementById('modalidadeFilter').value.toUpperCase();
-            const keywordFilter = document.getElementById('keywordFilter').value.toUpperCase();
-            const startDateFilter = document.getElementById('startDateFilter').value;
-            const endDateFilter = document.getElementById('endDateFilter').value;
+        // Botão ApplyRegionFilter
+        document.getElementById("applyRegionFilter").addEventListener("click", () => {
+            const regionSelected = document.getElementById("regionSelected");
 
-            return dados.filter(row => {
-                const ufMatch = ufFilter ? row['unidadeOrgaoUfSigla'] && row['unidadeOrgaoUfSigla'].toUpperCase().includes(ufFilter) : true;
-                const modalidadeMatch = modalidadeFilter ? row['modalidadeNome'] && row['modalidadeNome'].toUpperCase().includes(modalidadeFilter) : true;
-                const keywordMatch = keywordFilter ? row['objetoCompra'] && row['objetoCompra'].toUpperCase().includes(keywordFilter) : true;
+            // Verifica se nenhuma região está selecionada
+            if (regionSelected.options.length === 0) {
+                atualizarUFsPorRegiao(); // Atualiza para todas as UFs
+            } else {
+                atualizarUFsPorRegiao(); // Atualiza com base nas regiões selecionadas
+            }
+        });
 
-                const dataAbertura = row['dataAberturaPropostaPncp'] ? row['dataAberturaPropostaPncp'].split('T')[0] : '';
-                const dataIniciaDentro = startDateFilter ? dataAbertura >= startDateFilter : true;
-                const dataTerminaDentro = endDateFilter ? dataAbertura <= endDateFilter : true;
 
-                return ufMatch && modalidadeMatch && keywordMatch && dataIniciaDentro && dataTerminaDentro;
+
+        // Função para mover todos os itens de uma lista para outra
+        function moverTodosItens(origem, destino) {
+            Array.from(origem.options).forEach(option => {
+                origem.removeChild(option); // Remove da lista de origem
+                destino.appendChild(option); // Adiciona na lista de destino
             });
         }
 
-        // Carregar o arquivo Excel do repositório
-        fetch('dados_contratacoes_pncp 21.xlsx')
-            .then(response => response.arrayBuffer())
-            .then(data => {
-                const workbook = XLSX.read(data, { type: 'array' });
-                const sheet = workbook.Sheets[workbook.SheetNames[0]];
-                const json = XLSX.utils.sheet_to_json(sheet);
+        // Função para exibir todas as UFs (sem filtro por região)
+        function exibirTodasUfs() {
+            const ufAvailable = document.getElementById("ufAvailable");
+            const ufSelected = document.getElementById("ufSelected");
 
-                // Preencher os filtros de UF e Modalidade
-                const ufs = obterValoresUnicos(json, 'unidadeOrgaoUfSigla');
-                const modalidades = obterValoresUnicos(json, 'modalidadeNome');
+            // Combinar todas as opções (tanto disponíveis quanto selecionadas)
+            const todasAsUfs = [...Array.from(ufAvailable.options), ...Array.from(ufSelected.options)];
 
-                const ufSelect = document.getElementById('ufFilter');
-                const modalidadeSelect = document.getElementById('modalidadeFilter');
+            // Resetar as listas de UFs
+            ufAvailable.innerHTML = "";
+            ufSelected.innerHTML = "";
 
-                ufs.forEach(uf => {
-                    const option = document.createElement('option');
+            // Adicionar todas as UFs na lista de disponíveis
+            todasAsUfs.forEach(option => ufAvailable.appendChild(option));
+
+            // Ordenar a lista para manter a organização
+            ordenarLista(ufAvailable);
+        }
+
+        // Função para ordenar os itens dentro de uma lista (alfabeticamente)
+        function ordenarLista(lista) {
+            const options = Array.from(lista.options);
+            options.sort((a, b) => a.text.localeCompare(b.text)); // Ordenar pelo texto
+            lista.innerHTML = ""; // Limpar a lista
+            options.forEach(option => lista.appendChild(option)); // Reapendá-los em ordem
+        }
+        
+        // Evento ao alterar a seleção de regiões
+        // Função para atualizar as UFs com base nas regiões selecionadas
+        function atualizarUFsPorRegiao() {
+            const regionSelected = document.getElementById("regionSelected");
+            const ufAvailable = document.getElementById("ufAvailable");
+
+            // Obter as regiões selecionadas
+            const regioesSelecionadas = Array.from(regionSelected.options).map(option => option.value);
+
+            // Resetar a lista de UFs disponíveis
+            ufAvailable.innerHTML = "";
+
+            // Se nenhuma região estiver selecionada, ou se for para "todas as regiões"
+            if (regioesSelecionadas.length === 0) {
+                // Exibir todas as UFs
+                Object.values(regioes).flat().forEach(uf => {
+                    const option = document.createElement("option");
                     option.value = uf;
                     option.textContent = uf;
-                    ufSelect.appendChild(option);
+                    ufAvailable.appendChild(option);
                 });
-
-                modalidades.forEach(modalidade => {
-                    const option = document.createElement('option');
-                    option.value = modalidade;
-                    option.textContent = modalidade;
-                    modalidadeSelect.appendChild(option);
+            } else {
+                // Exibir apenas UFs das regiões selecionadas
+                regioesSelecionadas.forEach(regiao => {
+                    if (regioes[regiao]) {
+                        regioes[regiao].forEach(uf => {
+                            const option = document.createElement("option");
+                            option.value = uf;
+                            option.textContent = uf;
+                            ufAvailable.appendChild(option);
+                        });
+                    }
                 });
+            }
 
-                // Função para calcular a diferença em dias entre duas datas
-                function calcularDiasDeDiferenca(dataFinal) {
-                    const dataAtual = new Date();
-                    const dataEncerramento = new Date(dataFinal);
-                    const diffTime = dataEncerramento - dataAtual; // Diferença em milissegundos
-                    const diffDays = Math.ceil(diffTime / (1000 * 3600 * 24)); // Converte para dias
-                    return diffDays;
-                }
+            // Ordenar a lista de UFs disponíveis
+            ordenarLista(ufAvailable);
+        }
 
-                // Função para gerar os cards com alerta para data de encerramento próxima
-                function gerarCards(filtrados) {
-                    const dadosContainer = document.getElementById('dados');
-                    dadosContainer.innerHTML = ''; // Limpar os dados atuais
 
-                    // Exibir a contagem de licitações
-                    const countDisplay = document.getElementById('countDisplay');
-                    countDisplay.innerHTML = `Total de Licitações: ${filtrados.length}`;
 
-                    // Gerar os cards
-                    filtrados.forEach(row => {
-                        const card = document.createElement('div');
-                        card.classList.add('col');
+        function renderizarCards(dadosFiltrados) {
+            const container = document.getElementById("dados");
+            const countDisplay = document.getElementById("countDisplay");
+            container.innerHTML = "";
+    
+            if (dadosFiltrados.length === 0) {
+                countDisplay.innerHTML = "Nenhuma licitação encontrada.";
+                container.style.display = "none";
+                return;
+            }
+    
+            countDisplay.innerHTML = `Total de Licitações: ${dadosFiltrados.length}`;
+            container.style.display = "flex";
+            container.style.flexWrap = "wrap";
+    
+            dadosFiltrados.forEach((item) => {
+                const card = document.createElement("div");
+                card.className = "col, mb-4";
 
-                        // Calcular a diferença de dias para o encerramento
-                        const diffDias = calcularDiasDeDiferenca(row['dataEncerramentoPropostaPncp']);
-                        let alertaClass = '';
-                        let alertaMensagem = '';
+                // Alerta visual para data de encerramento próxima
+                const dataEncerramento = item["dataEncerramentoPropostaPncp"];
+                const diasRestantes = calcularDiasRestantes(dataEncerramento);
+                const alerta = diasRestantes <= 7 ? "border-danger" : ""; // Borda vermelha se faltam 7 dias ou menos
+                const iconeAlerta = diasRestantes <= 7 ? `<i class="fa fa-exclamation-triangle text-danger"></i>` : "";
 
-                        // Se a data de encerramento estiver a 3 dias ou menos
-                        if (diffDias <= 3 && diffDias >= 0) {
-                            alertaClass = 'alert-danger'; // Classe de alerta (vermelho)
-                            alertaMensagem = `Encerramento em ${diffDias} dias!`;
-                        }
-
-                        card.innerHTML = `
-                            <div class="col">
-                                <div class="card p-3 ${alertaClass}">
-                                    <div class="card-content">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <p class="icon-text">
-                                                    <i class="fa fa-map-marker-alt"></i> <strong>UF:</strong> ${row['unidadeOrgaoUfSigla']}
-                                                </p>
-                                            </div>
-                                            <div class="col-6">
-                                                <p class="icon-text">
-                                                    <i class="fa fa-city"></i> <strong>Cidade:</strong> ${row['unidadeOrgaoMunicipioNome']}
-                                                </p>
-                                            </div> 
-                                        </div>     
+    
+                card.innerHTML = `
+                    <div class="col">
+                        <div class="card p-3 ${alerta}">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col-6">
                                         <p class="icon-text">
-                                            <i class="fa fa-info-circle"></i> <strong>Objeto:</strong> ${row['objetoCompra']}
-                                        </p>
-                                        <p class="icon-text">
-                                            <i class="fa fa-building"></i> <strong>Órgão:</strong> ${row['unidadeOrgaoNomeUnidade']}
-                                        </p>
-                                        <p class="icon-text">
-                                            <i class="fa fa-list-alt"></i> <strong>Modalidade:</strong> ${row['modalidadeNome']}
-                                        </p>
-                                        <p class="icon-text">
-                                            <i class="fa fa-file-alt"></i> <strong>Edital:</strong> ${row['numeroCompra']}
-                                        </p>
-                                        <p class="icon-text">
-                                            <i class="fa fa-calendar-alt"></i> <strong>Abertura:</strong> ${formatarData(row['dataAberturaPropostaPncp'])}
-                                        </p>
-                                        <p class="icon-text">
-                                            <i class="fa fa-clock"></i> <strong>Encerramento:</strong> ${formatarData(row['dataEncerramentoPropostaPncp'])}
-                                        </p>
-                                        <p class="icon-text">
-                                            <i class="fa fa-dollar-sign"></i> <strong>Valor Estimado:</strong> ${formatarValor(row['valorTotalEstimado'])}
+                                            <i class="fa fa-map-marker-alt"></i> <strong>UF:</strong> ${item['unidadeOrgaoUfSigla']}
                                         </p>
                                     </div>
-                                    ${alertaMensagem ? `<div class="alert alert-warning alert-soft">${alertaMensagem}</div>` : ''}
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <a href="#" onclick="abrirModalComSite('https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/acompanhamento-compra?compra=${row['idCompra']}')" class="btn-infos btn mt-2">
-                                                <i class="fas fa-box btn-icon"></i> Ver Itens
-                                            </a>
-                                        </div>
-                                        <div class="col-6">
-                                            <a href="#" onclick="abrirModalComSite('https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/quadro-informativo?compra=${row['idCompra']}')" class="btn-infos btn mt-2">
-                                                <i class="fas fa-bell btn-icon"></i> Ver Avisos
-                                            </a>
-                                        </div> 
-                                    </div>     
-                                </div>
+                                    <div class="col-6">
+                                        <p class="icon-text">
+                                            <i class="fa fa-city"></i> <strong>Cidade:</strong> ${item['unidadeOrgaoMunicipioNome']}
+                                        </p>
+                                    </div> 
+                                </div>     
+                                <p class="icon-text">
+                                    <i class="fa fa-info-circle"></i> <strong>Objeto:</strong> ${item['objetoCompra']}
+                                </p>
+                                <p class="icon-text">
+                                    <i class="fa fa-building"></i> <strong>Órgão:</strong> ${item['unidadeOrgaoNomeUnidade']}
+                                </p>
+                                <p class="icon-text">
+                                    <i class="fa fa-list-alt"></i> <strong>Modalidade:</strong> ${item['modalidadeNome']}
+                                </p>
+                                <p class="icon-text">
+                                    <i class="fa fa-file-alt"></i> <strong>Edital:</strong> ${item['numeroCompra']}
+                                </p>
+                                <p class="icon-text">
+                                    <i class="fa fa-calendar-alt"></i> <strong>Abertura:</strong> ${formatarData(item['dataAberturaPropostaPncp'])}
+                                </p>
+                                <p class="icon-text">
+                                    <i class="fa fa-clock"></i> <strong>Encerramento:</strong> ${formatarData(item['dataEncerramentoPropostaPncp'])}
+                                    <small class="text-muted">Faltam ${diasRestantes} dias </small>${iconeAlerta}
+                                </p>
+                                <p class="icon-text">
+                                    <i class="fa fa-dollar-sign"></i> <strong>Valor Estimado:</strong> ${formatarValor(item['valorTotalEstimado'])}
+                                </p>
                             </div>
+                                <div class="row">
+                                <div class="col-6">
+                                    <a href="#" onclick="abrirModalComSite('https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/acompanhamento-compra?compra=${item['idCompra']}')" class="btn-infos btn mt-2">
+                                        <i class="fas fa-box btn-icon"></i> Ver Itens
+                                    </a>
+                                </div>
+                                <div class="col-6">
+                                    <a href="#" onclick="abrirModalComSite('https://cnetmobile.estaleiro.serpro.gov.br/comprasnet-web/public/compras/quadro-informativo?compra=${item['idCompra']}')" class="btn-infos btn mt-2">
+                                        <i class="fas fa-bell btn-icon"></i> Ver Avisos
+                                    </a>
+                                </div> 
+                            </div>     
                         </div>
-                        </br>
-                        `;
+                    </div>
+                </div>
+                </br>
+                `;
 
-                        dadosContainer.appendChild(card);
-                    });
-                }
-
-
-                // Inicialmente, gerar os cards com todos os dados
-                gerarCards(json);
-
-                // Adicionar evento de filtro
-                document.getElementById('ufFilter').addEventListener('change', () => gerarCards(filtrarDados(json)));
-                document.getElementById('modalidadeFilter').addEventListener('change', () => gerarCards(filtrarDados(json)));
-                document.getElementById('keywordFilter').addEventListener('input', () => gerarCards(filtrarDados(json)));
-                document.getElementById('startDateFilter').addEventListener('input', () => gerarCards(filtrarDados(json)));
-                document.getElementById('endDateFilter').addEventListener('input', () => gerarCards(filtrarDados(json)));
-                document.getElementById('clearFiltersButton').addEventListener('click', () => {
-                    document.getElementById('ufFilter').value = '';
-                    document.getElementById('modalidadeFilter').value = '';
-                    document.getElementById('keywordFilter').value = '';
-                    document.getElementById('startDateFilter').value = '';
-                    document.getElementById('endDateFilter').value = '';
-                    gerarCards(json);
-                });
+                container.appendChild(card);
             });
+            
+        }
+        // Função para configurar os botões
+        function configurarBotoes() {
+            // Botão de filtrar
+            document.getElementById("filterButton").addEventListener("click", () => {
+                carregarDadosFiltrados();
+            });
+
+            // Botão de limpar filtros
+            document.getElementById("clearFiltersButton").addEventListener("click", () => {
+                limparFiltros();
+            });
+            document.getElementById("moveRight").addEventListener("click", function () {
+                moverUfs("ufAvailable", "ufSelected");
+            });
+
+            document.getElementById("moveLeft").addEventListener("click", function () {
+                moverUfs("ufSelected", "ufAvailable");
+            });
+
+            // Função para mover as regiões da lista de disponíveis para a lista de selecionadas
+            document.getElementById("moveRegionRight").addEventListener("click", function () {
+                moverRegioes("regionAvailable", "regionSelected");
+            });
+
+            document.getElementById("moveRegionLeft").addEventListener("click", function () {
+                moverRegioes("regionSelected", "regionAvailable");
+            });
+        }
+
+        // Função para mover as regiões de uma lista para outra
+        function moverRegioes(fromId, toId) {
+            const fromList = document.getElementById(fromId);
+            const toList = document.getElementById(toId);
+
+            const selectedOptions = Array.from(fromList.selectedOptions);
+            selectedOptions.forEach(option => {
+                fromList.removeChild(option);
+                toList.appendChild(option);
+            });
+        }
+
+        // Função para mover as UFs de uma lista para outra
+        function moverUfs(fromId, toId) {
+            const fromList = document.getElementById(fromId);
+            const toList = document.getElementById(toId);
+
+            const selectedOptions = Array.from(fromList.selectedOptions);
+            selectedOptions.forEach(option => {
+                fromList.removeChild(option);
+                toList.appendChild(option);
+            });
+        }
+        // Função para aplicar os filtros de regiões
+        function aplicarRegionFilters() {
+            const regionSelected = document.getElementById("regionSelected");
+            const regioesSelecionadas = Array.from(regionSelected.options).map(option => option.value);
+
+            if (regioesSelecionadas.length === 0) {
+                document.getElementById("regionFilterDisplay").textContent = "Todas as Regiões";
+                exibirTodasUfs(); // Exibir todas as UFs se nenhuma região estiver selecionada
+            } else {
+                document.getElementById("regionFilterDisplay").textContent = regioesSelecionadas.join(", ");
+                atualizarUFs(); // Atualizar as UFs com base nas regiões selecionadas
+            }
+
+            // Fechar o modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('regionModal'));
+            modal.hide();
+        }
+        function moverItens(origemId, destinoId) {
+            const origem = document.getElementById(origemId);
+            const destino = document.getElementById(destinoId);
+
+            const itensSelecionados = Array.from(origem.selectedOptions);
+            itensSelecionados.forEach(item => {
+                origem.removeChild(item);
+                destino.appendChild(item);
+            });
+
+            ordenarLista(destino);
+        }
+        // Função para aplicar os filtros de UFs
+        function aplicarUFFilters() {
+            const ufSelected = document.getElementById("ufSelected");
+            const ufSelecionadas = Array.from(ufSelected.options).map(option => option.value);
+
+            if (ufSelecionadas.length === 0) {
+                // Se nenhuma UF estiver selecionada, exibir todas
+                document.getElementById("ufFilterDisplay").textContent = "Todas as UFs";
+                exibirTodasUfs();
+            } else {
+                // Exibir as UFs selecionadas
+                document.getElementById("ufFilterDisplay").textContent = ufSelecionadas.join(", ");
+            }
+
+            // Fechar o modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('ufModal'));
+            modal.hide();
+        }
+
+
+        // Exemplo de como os dados filtrados seriam processados
+        function renderizarDadosFiltrados(dadosFiltrados) {
+            console.log(dadosFiltrados); // Aqui você pode renderizar os dados na interface
+        }
+
+        function calcularDiasRestantes(dataEncerramento) {
+            if (!dataEncerramento) return Infinity;
+            const dataAtual = new Date();
+            const dataFinal = new Date(dataEncerramento);
+            const diferencaMs = dataFinal - dataAtual;
+            return Math.ceil(diferencaMs / (1000 * 60 * 60 * 24));
+        }
+        
+        function abrirModalComSite(link) {
+            const modalIframe = document.getElementById("modalIframe");
+            modalIframe.src = link;
+            const modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+            modal.show();
+        }
+
+        document.getElementById("regionSelected").addEventListener("change", atualizarUFs);
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
