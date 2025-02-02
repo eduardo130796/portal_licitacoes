@@ -1,6 +1,5 @@
 import requests
 import json
-from tqdm import tqdm
 import time
 from datetime import datetime, timedelta
 import os
