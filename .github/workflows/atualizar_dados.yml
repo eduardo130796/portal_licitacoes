@@ -7,7 +7,9 @@ on:
   push:
     branches:
       - main  # Ou a branch que você está utilizando
-
+permissions:
+  contents: write  # Permite escrita no repositório
+  
 jobs:
   update_data:
     runs-on: ubuntu-latest
@@ -36,10 +38,8 @@ jobs:
 
     - name: Commit e push dos dados gerados
       run: |
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
-        git add dados_pncp/*  # Adiciona os arquivos gerados
-        git commit -m "Atualização dos dados das contratações PNCP"
-        git push https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/eduardo130796/portal_licitacoes.git
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token para autenticação
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add dados_pncp/*  # Adiciona os arquivos gerados
+          git commit -m "Atualização dos dados das contratações PNCP"
+          git push https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/eduardo130796/portal_licitacoes.git
