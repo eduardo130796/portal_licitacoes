@@ -14,7 +14,7 @@ headers = {'accept': '*/*'}
 base_url = 'https://dadosabertos.compras.gov.br/modulo-contratacoes/1_consultarContratacoes_PNCP_14133'
 
 # Parâmetros de busca
-data_inicial = '2025-01-23'
+data_inicial = '2025-01-01'
 data_final = datetime.today().strftime('%Y-%m-%d')
 modalidades = ['01', '02', '03', '04', '05', '06', '07']
 
