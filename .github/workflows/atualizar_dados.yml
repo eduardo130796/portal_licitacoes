@@ -34,7 +34,8 @@ jobs:
 
     - name: Limpar pasta de dados antigos
       run: |
-        rm -rf dados_pncp/*  # Remove todos os arquivos da pasta de dados
+        rm -f dados_pncp/*  # Remove todos os arquivos da pasta de dados
+        mkdir -p dados_pncp
 
     - name: Commit e push dos dados gerados
       run: |
