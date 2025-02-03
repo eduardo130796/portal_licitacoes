@@ -28,19 +28,29 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
+    # Step 1: Criar o diretório onde os arquivos serão salvos
+    - name: Criar diretório para os dados
+      run: mkdir -p dados_pncp
+      
+    - name: Limpar pasta de dados antigos
+      run: |
+        rm -f dados_pncp/*  # Remove todos os arquivos da pasta de dados
+          
     - name: Executar script Python
       run: |
         python scripts/atualizar_dados.py
 
-    - name: Limpar pasta de dados antigos
-      run: |
-        rm -f dados_pncp/*  # Remove todos os arquivos da pasta de dados
-        mkdir -p dados_pncp
+    
 
-    - name: Commit e push dos dados gerados
+    # Step 3: Verificar que os arquivos foram gerados
+    - name: Listar arquivos no diretório dados_pncp
+      run: ls -al dados_pncp/
+    
+    # Step 4: Adicionar os arquivos gerados ao repositório
+    - name: Adicionar arquivos ao repositório
       run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          git add dados_pncp/*  # Adiciona os arquivos gerados
-          git commit -m "Atualização dos dados das contratações PNCP"
-          git push https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/eduardo130796/portal_licitacoes.git
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add dados_pncp/*  # Adiciona os arquivos gerados
+        git commit -m "Atualização dos dados das contratações PNCP"
+        git push https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/eduardo130796/portal_licitacoes.git
