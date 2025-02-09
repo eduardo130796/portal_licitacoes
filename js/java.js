@@ -28,10 +28,13 @@ document.getElementById("regionSelected").addEventListener("change", atualizarUF
 
 // Função para carregar os dados filtrados
 function carregarDadosFiltrados() {
-    document.getElementById('loading').style.display = 'block'; // Exibe o spinner
+    const loadingElement = document.getElementById('loading');
+    loadingElement.style.display = 'block'; // Exibe o spinner
 
     // Função para carregar e processar cada arquivo JSON de forma controlada
     async function carregarArquivos() {
+        let todosDados = []; // Armazena todos os dados filtrados
+
         try {
             const response = await fetch('https://api.github.com/repos/eduardo130796/portal_licitacoes/contents/dados_pncp');
             const data = await response.json();
@@ -39,8 +42,8 @@ function carregarDadosFiltrados() {
             // Filtra apenas os arquivos JSON
             const arquivosJson = data.filter(file => file.name.endsWith('.json'));
 
-            for (let i = 0; i < arquivosJson.length; i++) {
-                const file = arquivosJson[i];
+            // Cria uma lista de promessas para carregar todos os arquivos
+            const promises = arquivosJson.map(async (file) => {
                 try {
                     const fileData = await fetch(file.download_url);
                     const dados = await fileData.json();
@@ -53,26 +56,28 @@ function carregarDadosFiltrados() {
                         return new Date(dataEncerramento) >= dataAtual;
                     });
 
-                    // Aplica os filtros aos dados válidos
-                    aplicarFiltros(dadosValidos);
-
-                    // Adiciona uma pausa entre as requisições para evitar sobrecarga
-                    await new Promise(resolve => setTimeout(resolve, 1000)); // 1 segundo de pausa entre os arquivos
+                    // Adiciona os dados válidos à lista total
+                    todosDados = [...todosDados, ...dadosValidos];
                 } catch (error) {
                     console.error('Erro ao carregar o arquivo:', error);
                 }
-            }
+            });
+
+            // Espera todas as promessas de carregamento de arquivos terminarem
+            await Promise.all(promises);
+
+            // Aplica os filtros aos dados carregados
+            aplicarFiltros(todosDados);
 
         } catch (error) {
             console.error('Erro ao listar os arquivos:', error);
         } finally {
-            document.getElementById('loading').style.display = 'none'; // Esconde o spinner
+            loadingElement.style.display = 'none'; // Esconde o spinner
         }
     }
 
     carregarArquivos();
 }
-
 // Mapeamento de regiões e suas respectivas UFs
 const regioes = {
     "Norte": ["AC", "AP", "AM", "PA", "RO", "RR", "TO"],
