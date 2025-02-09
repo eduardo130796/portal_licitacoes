@@ -28,13 +28,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
-    # Step 1: Criar o diretório onde os arquivos serão salvos
-    - name: Criar diretório para os dados
-      run: mkdir -p dados_pncp
-      
-    - name: Limpar pasta de dados antigos
+    - name: Executar excluir pasta e criar novamente
       run: |
-        rm -f dados_pncp/*  # Remove todos os arquivos da pasta de dados
+        rm -rf dados_pncp
+        mkdir -p dados_pncp
+
           
     - name: Executar script Python
       run: |
