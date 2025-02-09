@@ -28,10 +28,25 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests
 
+    - name: Listar arquivos antes da exclusão
+      run: ls -al dados_pncp/
+
     - name: Executar excluir pasta e criar novamente
       run: |
         rm -rf dados_pncp
         mkdir -p dados_pncp
+
+    - name: Listar arquivos após a exclusão
+      run: ls -al dados_pncp/
+
+    - name: Remover arquivos do Git e criar pasta novamente
+      run: |
+        git rm -rf dados_pncp || true
+        rm -rf dados_pncp
+        mkdir -p dados_pncp
+        
+    - name: Limpar arquivos não rastreados
+      run: git clean -fd
 
           
     - name: Executar script Python
@@ -49,6 +64,6 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git add dados_pncp/*  # Adiciona os arquivos gerados
+        git add --all  # Adiciona os arquivos gerados
         git commit -m "Atualização dos dados das contratações PNCP"
         git push https://github-actions:${{ secrets.GITHUB_TOKEN }}@github.com/eduardo130796/portal_licitacoes.git
