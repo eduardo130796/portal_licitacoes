@@ -560,8 +560,23 @@ function calcularDiasRestantes(dataEncerramento) {
 function abrirModalComSite(link) {
     const modalIframe = document.getElementById("modalIframe");
     modalIframe.src = link;
+
+    // Prevenir que a página role para o topo
+    const body = document.body;
+    const scrollPosition = window.scrollY;
+
+    // Impede a rolagem da página (sem afetar a posição do body)
+    body.style.overflow = 'hidden';  // Evita a rolagem
+
+    // Abrir o modal
     const modal = new bootstrap.Modal(document.getElementById("exampleModal"));
     modal.show();
+
+    // Restaurar a rolagem após o modal ser fechado
+    modal._element.addEventListener('hidden.bs.modal', function () {
+        body.style.overflow = '';  // Restaura a rolagem
+        window.scrollTo(0, scrollPosition);  // Restaura a posição original da rolagem
+    });
 }
 
 document.getElementById("regionSelected").addEventListener("change", atualizarUFs);
