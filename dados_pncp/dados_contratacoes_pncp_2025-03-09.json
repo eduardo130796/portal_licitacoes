@@ -195,7 +195,7 @@
         "amparoLegalCodigoPncp": 19,
         "amparoLegalNome": "Lei 14.133/2021, Art. 75, II",
         "amparoLegalDescricao": "Dispensa de Licitação: para contratação que envolva valores inferiores a R$ 50.000,00 (cinquenta mil reais), no caso de outros serviços e compras",
-        "informacaoComplementar": "Dispensa legal em raão do valor",
+        "informacaoComplementar": "Dispensa legal em razão do valor",
         "processo": "28101.000128/2025",
         "objetoCompra": "Aquisição de MOBILIÁRIOS, conforme condições, quantidades e exigências estabelecidas neste Aviso e seus anexos.",
         "existeResultado": false,
@@ -209,10 +209,10 @@
         "valorTotalEstimado": 0.0,
         "valorTotalHomologado": null,
         "dataInclusaoPncp": "2025-03-09T19:51:49",
-        "dataAualizacaoPncp": "2025-03-09T19:51:49",
+        "dataAualizacaoPncp": "2025-03-10T11:58:01",
         "dataPublicacaoPncp": "2025-03-09T19:51:49",
-        "dataAberturaPropostaPncp": "2025-03-09T19:51:47",
-        "dataEncerramentoPropostaPncp": "2025-03-13T08:59:59",
+        "dataAberturaPropostaPncp": "2025-03-10T11:57:59",
+        "dataEncerramentoPropostaPncp": "2025-03-14T08:59:59",
         "contratacaoExcluida": false
     }
 ]
