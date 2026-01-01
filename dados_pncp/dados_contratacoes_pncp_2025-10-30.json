@@ -314,13 +314,13 @@
         "tipoInstrumentoConvocatorioCodigoPncp": 1,
         "tipoInstrumentoConvocatorioNome": "Edital",
         "modoDisputaNomePncp": "Aberto-Fechado",
-        "valorTotalEstimado": 111213182.57,
+        "valorTotalEstimado": 106681039.64,
         "valorTotalHomologado": null,
         "dataInclusaoPncp": "2025-10-30T07:12:36",
-        "dataAtualizacaoPncp": "2025-12-19T07:45:57",
+        "dataAtualizacaoPncp": "2025-12-29T07:07:14",
         "dataPublicacaoPncp": "2025-10-30T07:12:36",
-        "dataAberturaPropostaPncp": "2025-10-30T08:00:00",
-        "dataEncerramentoPropostaPncp": "2026-01-23T11:00:00",
+        "dataAberturaPropostaPncp": "2025-12-29T08:00:00",
+        "dataEncerramentoPropostaPncp": "2026-02-06T11:00:00",
         "contratacaoExcluida": false
     },
     {
